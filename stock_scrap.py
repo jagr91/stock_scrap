@@ -17,21 +17,25 @@ def stock_scrap(url):
     data_list.remove('') #clean out data pt2
     return data_list
 
-#GPW
-url = 'https://www.bankier.pl/gielda/notowania/akcje'
-data = stock_scrap(url)
-data_rows = [[str(today), 'GPW'] + data[i:i+10] for i in range(0, len(data), 10)] #put data list into rows
+def main():
+    #GPW
+    url = 'https://www.bankier.pl/gielda/notowania/akcje'
+    data = stock_scrap(url)
+    data_rows = [[str(today), 'GPW'] + data[i:i+10] for i in range(0, len(data), 10)] #put data list into rows
 
-#NC
-url = 'https://www.bankier.pl/gielda/notowania/new-connect'
-data = stock_scrap(url)
-data_rows += [[str(today), 'NC'] + data[i:i+10] for i in range(0, len(data), 10)] #append to the data list with rows
+    #NC
+    url = 'https://www.bankier.pl/gielda/notowania/new-connect'
+    data = stock_scrap(url)
+    data_rows += [[str(today), 'NC'] + data[i:i+10] for i in range(0, len(data), 10)] #append to the data list with rows
 
-#create file
-with open(f'{file_path}{file_name}', 'a', newline='') as file:
-    writer = csv.writer(file)
-    for row in data_rows:
-        writer.writerow(row)
+    #create file
+    with open(f'{file_path}{file_name}', 'a', newline='') as file:
+        writer = csv.writer(file)
+        for row in data_rows:
+            writer.writerow(row)
 
-#copy file from temp to an archive
-os.system(f'cp {file_path}{file_name} /home/pi/Stock/Data/{file_name}')
+    #copy file from temp to an archive
+    os.system(f'cp {file_path}{file_name} /home/pi/Stock/Data/{file_name}')
+
+if __name__ == '__main__':
+    main()
